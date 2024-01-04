@@ -8,8 +8,10 @@ const (
 	DeleteUser  = `DELETE FROM users WHERE id=$1`
 
 	//query product
-	InsertProduct = `INSERT INTO product (product_name, description, price,stock_quantity, category_id,image_id) VALUES ($1, $2, $3, $4, $5, $6) RETURNING created_at`
-	SelectProduct = `SELECT id,product_name, description, price,stock_quantity,created_at, updated_at, category_id,image_id FROM product ORDER BY created_at`
-	UpdateProduct = `UPDATE product SET product_name= $2, description= $3, price= $4,stock_quantity=$5, category_id=$6,image_id=$7 WHERE id=$1 RETURNING updated_at `
-	DeleteProduct = `DELETE FROM product WHERE id=$1`
+	InsertProduct              = `INSERT INTO product (product_name, description, price,stock_quantity, category_id,image_id) VALUES ($1, $2, $3, $4, $5, $6) RETURNING id,created_at`
+	SelectProduct              = `SELECT id,product_name, description, price,stock_quantity,created_at, updated_at, category_id,image_id FROM product ORDER BY created_at`
+	SelectProductById          = `SELECT id,product_name, description, price,stock_quantity,created_at, updated_at, category_id,image_id FROM product WHERE id=$1`
+	SelectProductByProductName = `SELECT id,product_name, description, price,stock_quantity,created_at, updated_at, category_id,image_id FROM product WHERE product_name=$1`
+	UpdateProduct              = `UPDATE product SET product_name= $2, description= $3, price= $4,stock_quantity=$5, category_id=$6,image_id=$7 WHERE id=$1 RETURNING updated_at `
+	DeleteProduct              = `DELETE FROM product WHERE id=$1`
 )

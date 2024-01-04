@@ -72,12 +72,40 @@ func (p *ProductController) deleteProductHandler(c *gin.Context) {
 	}
 	c.JSON(http.StatusOK, "Delete succesfully")
 }
+func (p *ProductController) getProductByIdHandler(c *gin.Context) {
+	id := c.Param("id")
+	if id == "" {
+		c.JSON(http.StatusBadRequest, "invalid id")
+		return
+	}
+	product, err := p.productUC.FindProductById(id)
+	if err != nil {
+		c.JSON(http.StatusInternalServerError, err.Error())
+		return
+	}
+	c.JSON(http.StatusOK, gin.H{"data": product})
+}
+func (p *ProductController) getProductByProductNameHandler(c *gin.Context) {
+	productName := c.Param("productName")
+	if productName == "" {
+		c.JSON(http.StatusBadRequest, "invalid id")
+		return
+	}
+	product, err := p.productUC.FindProductByProductName(productName)
+	if err != nil {
+		c.JSON(http.StatusInternalServerError, err.Error())
+		return
+	}
+	c.JSON(http.StatusOK, gin.H{"data": product})
+}
 
 func (p *ProductController) Route() {
 	p.rg.POST(config.ProductPost, p.createHandler)
 	p.rg.GET(config.ProductGet, p.listProductHandler)
 	p.rg.PUT(config.ProductPut, p.updateProductHandler)
 	p.rg.DELETE(config.ProductDelete, p.deleteProductHandler)
+	p.rg.GET(config.ProductGetById, p.getProductByIdHandler)
+	p.rg.GET(config.ProductGetByProductName, p.getProductByProductNameHandler)
 }
 
 func NewProductController(productUC usecase.ProductUseCase, rg *gin.RouterGroup) *ProductController {

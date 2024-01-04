@@ -11,10 +11,22 @@ type ProductUseCase interface {
 	FindAllProduct() ([]entity.Product, error)
 	UpdateProduct(payload entity.Product) (entity.Product, error)
 	DeletedProduct(id string) (entity.Product, error)
+	FindProductById(id string) (entity.Product, error)
+	FindProductByProductName(productName string) (entity.Product, error)
 }
 
 type productUseCase struct {
 	repo repository.ProductRepository
+}
+
+// FindProductByProductName implements ProductUseCase.
+func (p *productUseCase) FindProductByProductName(productName string) (entity.Product, error) {
+	return p.repo.GetProductByProductName(productName)
+}
+
+// FindProductById implements ProductUseCase.
+func (p *productUseCase) FindProductById(id string) (entity.Product, error) {
+	return p.repo.GetProductById(id)
 }
 
 // DeletedProduct implements ProductUseCase.
