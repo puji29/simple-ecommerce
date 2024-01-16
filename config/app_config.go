@@ -18,4 +18,16 @@ const (
 	//category
 	//orderItem
 	//orderTable
+	OrderTablePost   = "/orderTable/"
+	OrderTableList   = "/orderTable/"
+	OrderTablePut    = "/orderTable/:id"
+	OrderTableDelete = "/orderTable/:id"
+	OrderTableByID   = "/orderTable/:id"
+
+	//image
+	ImageInsert = "/image"
+	ImageGet    = "/image"
+	ImagePut    = "/image/:id"
+	ImageById   = "/image/:id"
+	ImageDelete = "/image/:id"
 )

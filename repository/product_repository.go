@@ -85,7 +85,7 @@ func (p *productRepository) ListProduct() ([]entity.Product, error) {
 		)
 		if err != nil {
 			log.Println("productRepository.Next: ", err.Error())
-			return []entity.Product{}, nil
+			return []entity.Product{}, err
 		}
 		products = append(products, product)
 	}

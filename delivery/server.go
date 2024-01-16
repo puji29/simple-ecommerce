@@ -13,16 +13,20 @@ import (
 )
 
 type Server struct {
-	userUC    usecase.UserUseCase
-	productUC usecase.ProductUseCase
-	engine    *gin.Engine
-	host      string
+	userUC       usecase.UserUseCase
+	productUC    usecase.ProductUseCase
+	orderTableUC usecase.OrderTableUseCase
+	imageUC      usecase.ImageUseCase
+	engine       *gin.Engine
+	host         string
 }
 
 func (s *Server) initRoute() {
 	rg := s.engine.Group(config.ApiGroup)
 	controller.NewUserController(s.userUC, rg).Route()
 	controller.NewProductController(s.productUC, rg).Route()
+	controller.NewOrderTableController(s.orderTableUC, rg).Route()
+	controller.NewImageController(s.imageUC, rg).Route()
 }
 
 func (s *Server) Run() {
@@ -42,16 +46,22 @@ func NewServer() *Server {
 	//inject repo
 	userRepo := repository.NewUserREpository(db)
 	productRepo := repository.NewProductRepository(db)
+	orderTableRepo := repository.NewOrderTableRepository(db)
+	imageRepo := repository.NewImageRepository(db)
 
 	//inject usecase
 	userUc := usecase.NewUserUseCase(userRepo)
 	ProductUc := usecase.NewProductUseCase(productRepo)
+	OrderTableUC := usecase.NewOrderTableUseCase(orderTableRepo)
+	imageUc := usecase.NewImageUsecase(imageRepo)
 	engine := gin.Default()
 	host := fmt.Sprintf(":%s", cfg.ApiPort)
 	return &Server{
-		engine:    engine,
-		host:      host,
-		userUC:    userUc,
-		productUC: ProductUc,
+		engine:       engine,
+		host:         host,
+		userUC:       userUc,
+		productUC:    ProductUc,
+		orderTableUC: OrderTableUC,
+		imageUC:      imageUc,
 	}
 }
