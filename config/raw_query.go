@@ -28,4 +28,7 @@ const (
 	ImageUpdate     = `UPDATE images SET image=$2 WHERE id=$1 RETURNING updated_at`
 	SelectImageById = `SELECT id, image, created_at, updated_at FROM images WHERE id=$1`
 	DeleteImage     = `DELETE FROM images WHERE id=$1`
+
+	//category
+	InsertCategory = `INSERT INTO category (category_name) VALUES ($1) RETURNING id,created_at`
 )

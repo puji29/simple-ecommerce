@@ -30,4 +30,7 @@ const (
 	ImagePut    = "/image/:id"
 	ImageById   = "/image/:id"
 	ImageDelete = "/image/:id"
+
+	//category
+	CategoryPost = "/category"
 )

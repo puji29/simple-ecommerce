@@ -17,6 +17,7 @@ type Server struct {
 	productUC    usecase.ProductUseCase
 	orderTableUC usecase.OrderTableUseCase
 	imageUC      usecase.ImageUseCase
+	categoryUC   usecase.CategoryUseCase
 	engine       *gin.Engine
 	host         string
 }
@@ -27,6 +28,7 @@ func (s *Server) initRoute() {
 	controller.NewProductController(s.productUC, rg).Route()
 	controller.NewOrderTableController(s.orderTableUC, rg).Route()
 	controller.NewImageController(s.imageUC, rg).Route()
+	controller.NewCategoryController(s.categoryUC, rg).Route()
 }
 
 func (s *Server) Run() {
@@ -48,12 +50,14 @@ func NewServer() *Server {
 	productRepo := repository.NewProductRepository(db)
 	orderTableRepo := repository.NewOrderTableRepository(db)
 	imageRepo := repository.NewImageRepository(db)
+	cateRepo := repository.NewCategoryRepository(db)
 
 	//inject usecase
 	userUc := usecase.NewUserUseCase(userRepo)
 	ProductUc := usecase.NewProductUseCase(productRepo)
 	OrderTableUC := usecase.NewOrderTableUseCase(orderTableRepo)
 	imageUc := usecase.NewImageUsecase(imageRepo)
+	cateUc := usecase.NewCategoryUseCase(cateRepo)
 	engine := gin.Default()
 	host := fmt.Sprintf(":%s", cfg.ApiPort)
 	return &Server{
@@ -63,5 +67,6 @@ func NewServer() *Server {
 		productUC:    ProductUc,
 		orderTableUC: OrderTableUC,
 		imageUC:      imageUc,
+		categoryUC:   cateUc,
 	}
 }
