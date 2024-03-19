@@ -13,13 +13,14 @@ import (
 )
 
 type Server struct {
-	userUC       usecase.UserUseCase
-	productUC    usecase.ProductUseCase
-	orderTableUC usecase.OrderTableUseCase
-	imageUC      usecase.ImageUseCase
-	categoryUC   usecase.CategoryUseCase
-	engine       *gin.Engine
-	host         string
+	userUC        usecase.UserUseCase
+	productUC     usecase.ProductUseCase
+	orderTableUC  usecase.OrderTableUseCase
+	imageUC       usecase.ImageUseCase
+	categoryUC    usecase.CategoryUseCase
+	orderDetailUc usecase.OrderDetailUsecase
+	engine        *gin.Engine
+	host          string
 }
 
 func (s *Server) initRoute() {
@@ -29,6 +30,7 @@ func (s *Server) initRoute() {
 	controller.NewOrderTableController(s.orderTableUC, rg).Route()
 	controller.NewImageController(s.imageUC, rg).Route()
 	controller.NewCategoryController(s.categoryUC, rg).Route()
+	controller.NewOrderDetailController(s.orderDetailUc, rg).Route()
 }
 
 func (s *Server) Run() {
@@ -51,22 +53,25 @@ func NewServer() *Server {
 	orderTableRepo := repository.NewOrderTableRepository(db)
 	imageRepo := repository.NewImageRepository(db)
 	cateRepo := repository.NewCategoryRepository(db)
+	orderDetailRepo := repository.NewOrderDetailRepository(db)
 
 	//inject usecase
 	userUc := usecase.NewUserUseCase(userRepo)
 	ProductUc := usecase.NewProductUseCase(productRepo)
 	OrderTableUC := usecase.NewOrderTableUseCase(orderTableRepo)
 	imageUc := usecase.NewImageUsecase(imageRepo)
+	orderDetailUc := usecase.NewOrderDeatailUsecase(orderDetailRepo)
 	cateUc := usecase.NewCategoryUseCase(cateRepo)
 	engine := gin.Default()
 	host := fmt.Sprintf(":%s", cfg.ApiPort)
 	return &Server{
-		engine:       engine,
-		host:         host,
-		userUC:       userUc,
-		productUC:    ProductUc,
-		orderTableUC: OrderTableUC,
-		imageUC:      imageUc,
-		categoryUC:   cateUc,
+		engine:        engine,
+		host:          host,
+		userUC:        userUc,
+		productUC:     ProductUc,
+		orderTableUC:  OrderTableUC,
+		imageUC:       imageUc,
+		categoryUC:    cateUc,
+		orderDetailUc: orderDetailUc,
 	}
 }

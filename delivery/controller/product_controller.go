@@ -88,7 +88,7 @@ func (p *ProductController) getProductByIdHandler(c *gin.Context) {
 func (p *ProductController) getProductByProductNameHandler(c *gin.Context) {
 	productName := c.Param("productName")
 	if productName == "" {
-		c.JSON(http.StatusBadRequest, "invalid id")
+		c.JSON(http.StatusBadRequest, "invalid product name")
 		return
 	}
 	product, err := p.productUC.FindProductByProductName(productName)

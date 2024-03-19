@@ -4,8 +4,8 @@ const (
 	ApiGroup = "/api/v1"
 
 	//Users
-	UserPost   = "/users/"
-	UserList   = "/users/"
+	UserPost   = "/users"
+	UserList   = "/users"
 	UserUpdate = "/users/:id"
 	UserDelete = "/users/:id"
 	//product
@@ -33,4 +33,7 @@ const (
 
 	//category
 	CategoryPost = "/category"
+
+	//orderdetail
+	OrderDetailInsert = "/orderDetails"
 )

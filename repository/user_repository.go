@@ -89,7 +89,17 @@ func (u *userRepository) List() ([]entity.User, error) {
 
 // Create implements UserRepository.
 func (u *userRepository) Create(payload entity.User) (entity.User, error) {
-	if err := u.db.QueryRow(config.InsertUser, payload.Username, payload.UserRole, payload.Addres, payload.Email, payload.PasswordHash).Scan(&payload.ID, &payload.Created_at); err != nil {
+	var hashedPassword string
+
+	if payload.PasswordHash != "" {
+		hashed, err := bcrypt.GenerateFromPassword([]byte(payload.PasswordHash), bcrypt.DefaultCost)
+		if err != nil {
+			log.Println("bcrypt.GeneratedPassword:", err)
+			return entity.User{}, err
+		}
+		hashedPassword = string(hashed)
+	}
+	if err := u.db.QueryRow(config.InsertUser, payload.Username, payload.UserRole, payload.Addres, payload.Email, hashedPassword).Scan(&payload.ID, &payload.Created_at); err != nil {
 		return entity.User{}, err
 	}
 	return payload, nil

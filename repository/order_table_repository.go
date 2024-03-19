@@ -6,6 +6,7 @@ import (
 	"ecommerce/entity"
 	"log"
 	"strconv"
+	"time"
 )
 
 type OrderTableRepository interface {
@@ -43,6 +44,7 @@ func (o *orderTableRepository) Delete(id string) (entity.OrderTable, error) {
 
 // Update implements OrderTableRepository.
 func (o *orderTableRepository) Update(payload entity.OrderTable) (entity.OrderTable, error) {
+	payload.OrderDate = time.Now().Format("2006-01-02")
 	if err := o.db.QueryRow(config.UpdateOrderItem, payload.ID, payload.OrderDate, payload.TotalAmount).Scan(&payload.UpdatedAt); err != nil {
 		log.Println("repositoryUpdate:", err.Error())
 		return entity.OrderTable{}, err
@@ -90,6 +92,8 @@ func (o *orderTableRepository) List() ([]entity.OrderTable, error) {
 
 // create implements OrderTableRepository.
 func (o *orderTableRepository) Create(payload entity.OrderTable) (entity.OrderTable, error) {
+	// today = time.Now()
+	payload.OrderDate = time.Now().Format("2006-01-02")
 	if err := o.db.QueryRow(config.InsertOrderTable, payload.UserId, payload.OrderDate, payload.TotalAmount).Scan(&payload.ID, &payload.CreatedAt); err != nil {
 		log.Println("repostoryOT.QUERY : ", err.Error())
 		return entity.OrderTable{}, err
